@@ -1,7 +1,8 @@
 pub mod fir;
 pub mod iir;
 
-use crate::frequency::Frequency;
+use crate::frequency::Hz;
+use num_traits::Float;
 
 pub trait Response: Clone + Copy {}
 pub struct LOWPASS;
@@ -23,12 +24,12 @@ pub struct Filter<RESPONSE, PASS, KIND> {
     pass: PASS,
     kind: KIND,
     order: usize,
-    cutoff_frequency: Frequency<f64>,
+    cutoff_frequency: Hz<f64>
 }
 
 impl<R, K> FilterDesigner<R, K> {
     /// Creates a low pass filter
-    pub fn low_pass(self, order: usize, cutoff_frequency: Frequency<f64>) -> Filter<R, LOWPASS, K> {
+    pub fn low_pass(self, order: usize, cutoff_frequency: Hz<f64>) -> Filter<R, LOWPASS, K> {
         Filter {
             impulse_response: self.impulse_response,
             kind: self.kind,
@@ -38,7 +39,7 @@ impl<R, K> FilterDesigner<R, K> {
         }
     }
     /// Creates a high pass filter
-    pub fn high_pass(self, order: usize, cutoff_frequency: Frequency<f64>) -> Filter<R, HIGHPASS, K> {
+    pub fn high_pass(self, order: usize, cutoff_frequency: Hz<f64>) -> Filter<R, HIGHPASS, K> {
         Filter {
             impulse_response: self.impulse_response,
             kind: self.kind,
@@ -48,11 +49,11 @@ impl<R, K> FilterDesigner<R, K> {
         }
     }
     /// Sets the filter to band pass
-    pub fn band_pass(self, order: u32, range: (Frequency<f64>,Frequency<f64>)) -> Filter<R, BANDPASS, K> {
+    pub fn band_pass(self, order: u32, range: (Hz<f64>,Hz<f64>)) -> Filter<R, BANDPASS, K> {
         todo!()
     }
     /// Sets the filter to band stop
-    pub fn band_stop(self, order: u32, range: (Frequency<f64>, Frequency<f64>)) -> Filter<R, BANDSTOP, K> {
+    pub fn band_stop(self, order: u32, range: (Hz<f64>, Hz<f64>)) -> Filter<R, BANDSTOP, K> {
         todo!()
     }
 }

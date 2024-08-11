@@ -5,7 +5,10 @@ mod frequency;
 use filter::iir::IIR;
 use frequency::IntoFrequency;
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Errors {
+    NegativeFrequency,
+}
 fn main() {
-    let my_filter = IIR::butterworth()
-        .low_pass(5, 5.0.MHz());
+    IIR::butterworth().low_pass(5, 5.0.khz());
 }
